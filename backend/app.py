@@ -18,3 +18,8 @@ def receive_grid_state():
     
     else:
         return jsonify({"message": "error with the request"})
+    
+
+def parse_data(data):
+    if data['algorithm'] == 'BFS':
+        BFS(data['grid'], data['start'], data['end'] )

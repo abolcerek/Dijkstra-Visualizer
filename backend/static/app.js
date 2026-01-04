@@ -22,19 +22,23 @@ let grid = [];
 const cell_height = 50;
 const cell_width = 50;
 const cell_color = 'black';
-const line_width = 1;
+const line_width = 1;  
 
-for (row = 0; row < 25; row += 1) {
+const num_columns = 15
+const num_rows = 25 
+
+
+for (row = 0; row < num_rows; row += 1) {
     grid[row] = [];
-    for (column = 0; column < 15; column += 1) {
+    for (column = 0; column < num_columns; column += 1) {
         grid[row][column] = 'empty';
     }
 }
 
 function reset_grid() {
-    for (row = 0; row < 25; row += 1) {
+    for (row = 0; row < num_rows; row += 1) {
         grid[row] = [];
-        for (column = 0; column < 15; column += 1) {
+        for (column = 0; column < num_columns; column += 1) {
             grid[row][column] = 'empty';
         }
     }
@@ -198,8 +202,8 @@ Run.addEventListener('click', function() {
     const json = {
         "algorithm": current_algorithm,
         "grid": grid,
-        "start": {startRow, startColumn},
-        "end": {endRow, endColumn}
+        "start": {startColumn, startRow},
+        "end": {endColumn, endRow}
     };
    const jsonString = JSON.stringify(json);
    fetch('/router', {
