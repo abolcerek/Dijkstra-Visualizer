@@ -35,6 +35,9 @@ for (row = 0; row < num_rows; row += 1) {
     }
 }
 
+console.log(`This is the canvas width ${canvas.width}`);
+console.log(`This is the canvas height ${canvas.height}`);
+
 function reset_grid() {
     for (row = 0; row < num_rows; row += 1) {
         grid[row] = [];
@@ -70,6 +73,10 @@ function draw_rectangle(x, y, width, height, color) {
     ctx.strokeRect(x, y, width, height);
 }
 
+function draw_frames(frames) {
+
+}
+
 function clear_grid() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     if_started = false;
@@ -90,6 +97,8 @@ function clear_grid() {
     Astar.style.backgroundColor = "";
     Run.style.backgroundColor = "";
 }
+
+
 
 generate.addEventListener('click', draw_grid);
 
@@ -131,8 +140,8 @@ canvas.addEventListener('click', function(event) {
         start.style.backgroundColor = "";
         stack.push(node);
         draw_rectangle(x, y, cell_width, cell_height, color);
-        startRow = gridX;
-        startColumn = gridY;
+        startRow = gridY;
+        startColumn = gridX;
         grid[gridY][gridX] = 'start';
         return;
     }
@@ -141,8 +150,8 @@ canvas.addEventListener('click', function(event) {
         end.style.backgroundColor = "";
         stack.push(node);
         draw_rectangle(x, y, cell_width, cell_height, color);
-        endRow = gridX;
-        endColumn = gridY;
+        endRow = gridY;
+        endColumn = gridX;
         grid[gridY][gridX] = 'end';
         return;
     }
@@ -202,8 +211,10 @@ Run.addEventListener('click', function() {
     const json = {
         "algorithm": current_algorithm,
         "grid": grid,
-        "start": {startColumn, startRow},
-        "end": {endColumn, endRow}
+        "startRow": startRow,
+        "startColumn": startColumn,
+        "endRow": endRow,
+        "endColumn": endColumn,
     };
    const jsonString = JSON.stringify(json);
    fetch('/router', {
@@ -216,6 +227,7 @@ Run.addEventListener('click', function() {
    .then(response => response.json())
    .then(data => { 
         console.log('Success', data);
+        draw_frames(data['frames']);
    })
     console.log("Running  from...", startRow, startColumn);
 });
