@@ -11,11 +11,8 @@ def BFS(grid, start_row, start_column, end_row, end_column):
     while queue:
         current = queue.popleft()
         if current[0] == end_row and current[1] == end_column:
-            print('we found the end')
             path = get_path(start, current, parent)
             final_path = path[::-1]
-            print(f'this is the backwards path {final_path}')
-            print(f'This is the final frames: {frames}') 
             found = True
             return frames, found, final_path
         else:
@@ -32,7 +29,7 @@ def BFS(grid, start_row, start_column, end_row, end_column):
                         new_frontier.append(neighbor)
             frame = build_frame(current, new_visited, new_frontier)
             frames.append(frame)
-            print(f'This is the frame{frame}')
+    return frames, found, None
 
 
 def get_valid_neighbors(node, grid): 
@@ -74,23 +71,3 @@ def build_frame(current, new_visited, new_frontier):
     frame["new_frontier"] = new_frontier
     return frame
     
-
-    
-    
-    
-
-
-# grid = [["start", "empty", "empty", "wall", "empty", "empty", "empty"], ["empty", "wall", "empty", "wall", "empty", "wall", "empty"]
-# , ["empty", "wall", "empty", "empty", "empty", "wall", "empty"], ["empty", "empty", "wall", "wall", "empty", "empty", "empty"]
-# , ["empty", "empty", "empty", "empty", "wall", "empty", "end"]]
-
-# start_row = 0
-# start_col = 0
-# end_row = 4
-# end_col = 6
-
-# start = (start_row, start_col)
-# end = (end_row, end_col)
-
-
-# BFS(grid, start, end)

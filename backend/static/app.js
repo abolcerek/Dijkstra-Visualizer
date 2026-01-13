@@ -1,7 +1,6 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-const generate = document.getElementById("generate");
 const draw = document.getElementById("draw");
 const reset = document.getElementById("reset");
 const start = document.getElementById("start");
@@ -27,23 +26,12 @@ const line_width = 1;
 const num_columns = 15
 const num_rows = 25 
 
+frames_done = false;
 
 for (row = 0; row < num_rows; row += 1) {
     grid[row] = [];
     for (column = 0; column < num_columns; column += 1) {
         grid[row][column] = 'empty';
-    }
-}
-
-console.log(`This is the canvas width ${canvas.width}`);
-console.log(`This is the canvas height ${canvas.height}`);
-
-function reset_grid() {
-    for (row = 0; row < num_rows; row += 1) {
-        grid[row] = [];
-        for (column = 0; column < num_columns; column += 1) {
-            grid[row][column] = 'empty';
-        }
     }
 }
 
@@ -66,6 +54,18 @@ function draw_grid() {
     }
 }
 
+draw_grid();
+
+function reset_grid() {
+    for (row = 0; row < num_rows; row += 1) {
+        grid[row] = [];
+        for (column = 0; column < num_columns; column += 1) {
+            grid[row][column] = 'empty';
+        }
+    }
+}
+
+
 
 function draw_rectangle(x, y, width, height, color) {
     ctx.fillStyle = color;
@@ -73,8 +73,65 @@ function draw_rectangle(x, y, width, height, color) {
     ctx.strokeRect(x, y, width, height);
 }
 
-function draw_frames(frames) {
+function draw_frames(frame) {
+    let formatted_frame = frame[0]
+    let current = formatted_frame['current'];
+    console.log(current);
+    let current_row = current['r'];
+    let current_col = current['c'];
+    let x = current_col * cell_width;
+    let y = current_row * cell_height;
+    draw_rectangle(x, y, cell_width, cell_height, 'pink');
+    let new_visited = formatted_frame['new_visited'];
+    if (new_visited.length > 0) {
+        for (let j = 0; j < new_visited.length; j++) {
+            let node = new_visited[j];
+            let node_row = node[0];
+            let node_col = node[1];
+            x = node_col * cell_width;
+            y = node_row * cell_height;
+            draw_rectangle(x, y, cell_width, cell_height, 'purple');
+        }
+    }
+    let new_frontier = formatted_frame['new_frontier'];
+    if (new_frontier.length > 1) {
+        for (let j = 0; j < new_frontier.length; j++) {
+            let node = new_frontier[j];
+            let node_row = node[0];
+            let node_col = node[1];
+            x = node_col * cell_width;
+            y = node_row * cell_height;
+            draw_rectangle(x, y, cell_width, cell_height, 'crimson');
+        }
+    }
+}
 
+function draw_final_path(final_path) {
+    for (let i = 0; i < final_path.length; i++) {
+        let node = final_path[i];
+        let node_row = node[0];
+        let node_col = node[1];
+        x = node_col * cell_width;
+        y = node_row * cell_height;
+        draw_rectangle(x, y, cell_width, cell_height, 'yellow');
+    }
+    draw_rectangle(startColumn * cell_width, startRow * cell_height, cell_width, cell_height, 'green');
+    draw_rectangle(endColumn * cell_width, endRow * cell_height, cell_width, cell_height, 'red');
+}
+
+function animate_frames(frames, final_path) {
+  let i = 0;
+
+  function step() {
+    if (i >= frames.length) {
+        draw_final_path(final_path);
+        return;
+    }
+    draw_frames([frames[i]]);   
+    i++;
+    setTimeout(step);
+  }
+  step();
 }
 
 function clear_grid() {
@@ -89,6 +146,7 @@ function clear_grid() {
     endColumn = 'none';
     stack = [];
     reset_grid();
+    draw_grid();
     start.style.backgroundColor = "";
     end.style.backgroundColor = "";
     draw.style.backgroundColor = "";
@@ -98,9 +156,6 @@ function clear_grid() {
     Run.style.backgroundColor = "";
 }
 
-
-
-generate.addEventListener('click', draw_grid);
 
 start.addEventListener('click', function() {
     color = 'green';
@@ -161,12 +216,12 @@ canvas.addEventListener('click', function(event) {
             return;
         }
         if (if_started == true) {
-            if (gridX == startRow && gridY == startColumn) {
+            if (gridY == startRow && gridX == startColumn) {
                 return;
             }
         }
         if (if_ended == true) {
-            if (gridX == endRow && gridY == endColumn) {
+            if (gridY == endRow && gridX == endColumn) {
                 return;
             }
         }
@@ -226,9 +281,11 @@ Run.addEventListener('click', function() {
    })
    .then(response => response.json())
    .then(data => { 
-        console.log('Success', data);
-        draw_frames(data['frames']);
-   })
+        if (data['found'] == false) {
+            console.log("No path from start to end")
+        }
+        animate_frames(data['frames'], data['final_path']);
     console.log("Running  from...", startRow, startColumn);
+    });
 });
 

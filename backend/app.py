@@ -18,16 +18,18 @@ def receive_grid_state():
             start_row = data['startRow']
             start_column = data['startColumn']
             end_row = data['endRow']
-            end_column = data['endColumn']
-            print("hellow i am here")
-            print(f'this is the start row {start_row}')
-            print(f'this is the start column {start_column}')
-            
+            end_column = data['endColumn']            
             frames, found, final_path = BFS(data['grid'], start_row, start_column, end_row, end_column)
-            return jsonify({
-                "frames": frames, 
-                "found": found, 
-                "final_path": final_path}), 200
+            if found == True:           
+                return jsonify({
+                    "frames": frames, 
+                    "found": found, 
+                    "final_path": final_path}), 200
+            else:
+                return jsonify({
+                    "frames": frames,
+                    "found": found
+                })
     
     else:
         return jsonify({"message": "error with the request"})
