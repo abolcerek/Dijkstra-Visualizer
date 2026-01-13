@@ -160,15 +160,20 @@ function clear_grid() {
 start.addEventListener('click', function() {
     color = 'green';
     start.style.backgroundColor = 'green';
+    draw.style.backgroundColor = ""
+    end.style.backgroundColor = "";
 });
 
 draw.addEventListener('click', function() {
     color = 'orange';
     draw.style.backgroundColor = 'orange'
+    start.style.backgroundColor = "";
+    end.style.backgroundColor = "";
 })
 
 end.addEventListener('click', function() {
     draw.style.backgroundColor = "";
+    start.style.backgroundColor = "";
     color = 'red';
     end.style.backgroundColor = 'red';
 });

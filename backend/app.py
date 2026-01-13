@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template
-from algorithms import BFS
+from algorithms import BFS, DFS
 
 app = Flask(__name__)
 
@@ -20,6 +20,22 @@ def receive_grid_state():
             end_row = data['endRow']
             end_column = data['endColumn']            
             frames, found, final_path = BFS(data['grid'], start_row, start_column, end_row, end_column)
+            if found == True:           
+                return jsonify({
+                    "frames": frames, 
+                    "found": found, 
+                    "final_path": final_path}), 200
+            else:
+                return jsonify({
+                    "frames": frames,
+                    "found": found
+                })
+        if data['algorithm'] == 'DFS':
+            start_row = data['startRow']
+            start_column = data['startColumn']
+            end_row = data['endRow']
+            end_column = data['endColumn']            
+            frames, found, final_path = DFS(data['grid'], start_row, start_column, end_row, end_column)
             if found == True:           
                 return jsonify({
                     "frames": frames, 

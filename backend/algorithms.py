@@ -31,6 +31,36 @@ def BFS(grid, start_row, start_column, end_row, end_column):
             frames.append(frame)
     return frames, found, None
 
+def DFS(grid, start_row, start_column, end_row, end_column):
+    start = (start_row, start_column)
+    visited = set([start])
+    stack = []
+    stack.append(start)
+    parent = {}
+    frames = []
+    found = False
+    while stack:
+        current = stack.pop()
+        if current[0] == end_row and current[1] == end_column:
+            path = get_path(start, current, parent)
+            final_path = path[::-1]
+            found = True
+            return frames, found, final_path
+        else:
+            neighbors = get_valid_neighbors(current, grid)
+            new_visited = []
+            new_frontier = []
+            for neighbor in neighbors:
+                if neighbor not in visited:
+                    if grid[neighbor[0]][neighbor[1]] != "wall":
+                        visited.add(neighbor)
+                        new_visited.append(neighbor)
+                        parent[neighbor] = current
+                        stack.append(neighbor)
+                        new_frontier.append(neighbor)
+            frame = build_frame(current, new_visited, new_frontier)
+            frames.append(frame)
+    return frames, found, None
 
 def get_valid_neighbors(node, grid): 
     val_rows = len(grid) - 1
