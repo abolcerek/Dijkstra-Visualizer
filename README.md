@@ -8,12 +8,12 @@ Nodes that are currently being visited are represented in pink, whereas newly vi
 
 To run the code you must first clone the repository by running:
 
-`code` git clone https://github.com/abolcerek/Algorithm-Visualizer
+`git clone https://github.com/abolcerek/Algorithm-Visualizer`
 
 Then install flask by running:
 
-`code` pip install Flask
+`pip install Flask`
 
 Then cd into backend and run
 
-`code` flask run
+`flask run`
