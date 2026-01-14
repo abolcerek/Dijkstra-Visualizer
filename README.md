@@ -16,7 +16,7 @@ Then install flask by running:
 
 Then 
 
-`cd into backend`
+`cd backend`
 
 and run
 
