@@ -1,3 +1,7 @@
+// To do :
+    // Add in a slider to control animation speed
+    // Style frontend more
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
@@ -7,7 +11,7 @@ const start = document.getElementById("start");
 const end = document.getElementById("end");
 const BFS = document.getElementById("BFS");
 const DFS = document.getElementById("DFS");
-const Astar = document.getElementById("A*");
+const Astar = document.getElementById("Astar");
 const Run = document.getElementById("Run");
 
 if_started = false;
@@ -94,7 +98,7 @@ function draw_frames(frame) {
         }
     }
     let new_frontier = formatted_frame['new_frontier'];
-    if (new_frontier.length > 1) {
+    if (new_frontier.length > 0) {
         for (let j = 0; j < new_frontier.length; j++) {
             let node = new_frontier[j];
             let node_row = node[0];
@@ -190,9 +194,9 @@ canvas.addEventListener('click', function(event) {
     }
     const mouseX = event.offsetX;
     const mouseY= event.offsetY;
-    const gridX = Math.floor(mouseX / cell_height);
+    const gridX = Math.floor(mouseX / cell_width);
     const gridY = Math.floor(mouseY / cell_height);
-    const x = gridX * cell_height;
+    const x = gridX * cell_width;
     const y = gridY * cell_height;
     const node = [x, y, cell_width, cell_height];
     if (color == 'green') {
@@ -261,6 +265,9 @@ Astar.addEventListener('click', function() {
 });
 
 Run.addEventListener('click', function() {
+    if (if_started == false) {
+        return;
+    }
     if (if_ended == false) {
         return;
     }
@@ -287,10 +294,10 @@ Run.addEventListener('click', function() {
    .then(response => response.json())
    .then(data => { 
         if (data['found'] == false) {
-            console.log("No path from start to end")
+            console.log("No path from start to end");
+            return;
         }
         animate_frames(data['frames'], data['final_path']);
-    console.log("Running  from...", startRow, startColumn);
     });
 });
 

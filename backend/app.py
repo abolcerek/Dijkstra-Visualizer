@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template
-from algorithms import BFS, DFS
+from algorithms import BFS, DFS, Astar
 
 app = Flask(__name__)
 
@@ -36,6 +36,22 @@ def receive_grid_state():
             end_row = data['endRow']
             end_column = data['endColumn']            
             frames, found, final_path = DFS(data['grid'], start_row, start_column, end_row, end_column)
+            if found == True:           
+                return jsonify({
+                    "frames": frames, 
+                    "found": found, 
+                    "final_path": final_path}), 200
+            else:
+                return jsonify({
+                    "frames": frames,
+                    "found": found
+                })
+        if data['algorithm'] == 'Astar':
+            start_row = data['startRow']
+            start_column = data['startColumn']
+            end_row = data['endRow']
+            end_column = data['endColumn']            
+            frames, found, final_path = Astar(data['grid'], start_row, start_column, end_row, end_column)
             if found == True:           
                 return jsonify({
                     "frames": frames, 
