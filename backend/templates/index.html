@@ -7,15 +7,24 @@
     <title>Canvas</title>
 </head>
 <body>
-    <canvas id="canvas" width="750" height="1250"></canvas>
+    <div class="options">
+        <label for="speed">Speed</label>
+        <input id="speed" type="range" min="0" max="300" value="80" step="5">
+        <span id="speedValue">80ms</span>
+        <div class="buttons">
+            <button id="reset" >Reset Grid</button>
+            <button id="start" >Start</button>
+            <button id="draw" >Draw</button>
+            <button id="end" >End</button>
+            <button id="BFS" >BFS</button>
+            <button id="DFS" >DFS</button>
+            <button id="Astar" >A*</button>
+            <button id="Run" >Run</button>
+        </div>
+    </div>
     <script src="../static/app.js" defer></script>
-    <button id="reset" >Reset Grid</button>
-    <button id="start" >Start</button>
-    <button id="draw" >Draw</button>
-    <button id="end" >End</button>
-    <button id="BFS" >BFS</button>
-    <button id="DFS" >DFS</button>
-    <button id="Astar" >A*</button>
-    <button id="Run" >Run</button>
+    <canvas id="canvas" width="750" height="1250"></canvas>
+    <p id="NoPath"></p>
+
 </body>
 </html>

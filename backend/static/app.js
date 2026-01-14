@@ -14,6 +14,9 @@ const DFS = document.getElementById("DFS");
 const Astar = document.getElementById("Astar");
 const Run = document.getElementById("Run");
 
+const speedSlider = document.getElementById("speed");
+const speedValue = document.getElementById("speedValue");
+
 if_started = false;
 if_ended = false;
 color = 'none';
@@ -31,6 +34,13 @@ const num_columns = 15
 const num_rows = 25 
 
 frames_done = false;
+
+let animationDelayMs = 80;
+
+speedSlider.addEventListener("input", () => {
+  animationDelayMs = Number(speedSlider.value);
+  speedValue.textContent = `${animationDelayMs}ms`;
+});
 
 for (row = 0; row < num_rows; row += 1) {
     grid[row] = [];
@@ -133,7 +143,7 @@ function animate_frames(frames, final_path) {
     }
     draw_frames([frames[i]]);   
     i++;
-    setTimeout(step);
+    setTimeout(step, animationDelayMs);
   }
   step();
 }
@@ -158,6 +168,7 @@ function clear_grid() {
     DFS.style.backgroundColor = "";
     Astar.style.backgroundColor = "";
     Run.style.backgroundColor = "";
+    document.getElementById('NoPath').textContent = "";
 }
 
 
@@ -294,7 +305,7 @@ Run.addEventListener('click', function() {
    .then(response => response.json())
    .then(data => { 
         if (data['found'] == false) {
-            console.log("No path from start to end");
+            document.getElementById('NoPath').textContent = "No path from start to end, please reset grid";
             return;
         }
         animate_frames(data['frames'], data['final_path']);
