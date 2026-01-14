@@ -1,7 +1,3 @@
-// To do :
-    // Add in a slider to control animation speed
-    // Style frontend more
-
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
