@@ -14,6 +14,10 @@ Then install flask by running:
 
 `pip install Flask`
 
-Then cd into backend and run
+Then 
+
+`cd into backend`
+
+and run
 
 `flask run`
